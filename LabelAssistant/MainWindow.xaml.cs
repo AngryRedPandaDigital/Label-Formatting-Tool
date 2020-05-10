@@ -59,19 +59,16 @@ namespace LabelAssistant
         private void exitButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-
         }
 
         private void printButton_Click(object sender, RoutedEventArgs e)
         {
-     
-                foreach (LabelData label in outputBuffer)
-                {
-                    File.AppendAllText(labelPath, label.GetLabelText() + Environment.NewLine);
-                File.AppendAllText(barcodePath, label.GetBarCode() + Environment.NewLine);
+            foreach (LabelData label in outputBuffer)
+            {
+                File.AppendAllText(labelPath, label.LabelText + Environment.NewLine);
+                File.AppendAllText(barcodePath, label.BarCode + Environment.NewLine);
                 //Process.Start(waspPath);
             }
-            }
-        
+        }
     }
 }
