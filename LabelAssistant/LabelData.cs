@@ -12,7 +12,7 @@ namespace LabelAssistant
 
     class LabelData
     {
-        private WhseTag whse; //Variables for the label class.
+        private WhseTag whse;
         private string aisle;
         private string section;
         private string shelf;
@@ -27,13 +27,17 @@ namespace LabelAssistant
         /// <summary>
         /// Derives the barcode string from previously input information.
         /// </summary>
-        public string BarCode => whse.ToString() + aisle + section + shelf + location;
+        public string BarCode => (int)whse + aisle + section + shelf + location;
 
         /// <summary>
         /// Derives the Label Text from input information.
         /// </summary>
         public string LabelText => $"{aisle}-{section}-{shelf}-{location}";
 
+        /// <summary>
+        /// Handles errors and sets the value of aisle to user input.
+        /// </summary>
+        /// <param name="value">The aisle.</param>
         public void SetAisle(string value)
         {
             if (value.Length == 2)
@@ -42,10 +46,12 @@ namespace LabelAssistant
                 creationErrorStatus = 0;
             }
             else creationErrorStatus = 1;
-
-            //Handles errors and sets the value of aisle to user input.
         }
 
+        /// <summary>
+        /// Handles errors and sets the value of section to user input.
+        /// </summary>
+        /// <param name="value">The section.</param>
         public void SetSection(string value)
         {
             if (value.Length == 2)
@@ -54,9 +60,12 @@ namespace LabelAssistant
                 creationErrorStatus = 0;
             }
             else creationErrorStatus = 1;
-            //Handles errors and sets the value of section to user input.
         }
 
+        /// <summary>
+        /// Handles errors and sets the value of location to user input.
+        /// </summary>
+        /// <param name="value">The location.</param>
         public void SetLocation(string value)
         {
             if (value.Length == 2)
@@ -65,9 +74,12 @@ namespace LabelAssistant
                 creationErrorStatus = 0;
             }
             else creationErrorStatus = 1;
-            //Handles errors and sets the value of location to user input.
         }
 
+        /// <summary>
+        /// Handles errors and sets the value of shelf to user input.
+        /// </summary>
+        /// <param name="value">The shelf.</param>
         public void SetShelf(string value)
         {
             if (value.Length == 2)
@@ -76,7 +88,6 @@ namespace LabelAssistant
                 creationErrorStatus = 0;
             }
             else creationErrorStatus = 1;
-            //Handles errors and sets the value of shelf to user input.
         }
     }
 }
