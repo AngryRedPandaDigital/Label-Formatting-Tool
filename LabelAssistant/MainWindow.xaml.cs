@@ -23,11 +23,12 @@ namespace LabelAssistant
     /// </summary>
     public partial class MainWindow : Window
     {
-        int whseTag;
+        WhseTag whseTag;
         List<LabelData> outputBuffer = new List<LabelData>();
         string labelPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "locationlabels.txt");
         string barcodePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "locationbarcodes.txt");
         //string waspPath;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -37,22 +38,21 @@ namespace LabelAssistant
 
         private void mainSelect_Checked(object sender, RoutedEventArgs e)
         {
-            whseTag = 20;
+            whseTag = WhseTag.Main;
         }
 
         private void cageSelect_Checked(object sender, RoutedEventArgs e)
         {
-            whseTag = 10;
+            whseTag = WhseTag.Cage;
         }
 
         private void addLabel_Click(object sender, RoutedEventArgs e)
         {
-            LabelData temp = new LabelData();
+            LabelData temp = new LabelData(whseTag);
             temp.SetAisle(aisleNumber.Text);
             temp.SetSection(sectionName.Text);
             temp.SetShelf(shelfNumber.Text);
             temp.SetLocation(positionNumber.Text);
-            temp.SetWhse(whseTag);
             outputBuffer.Add(temp);
         }
 
