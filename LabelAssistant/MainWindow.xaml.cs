@@ -23,7 +23,7 @@ namespace LabelAssistant
     /// </summary>
     public partial class MainWindow : Window
     {
-        int whseTag;
+        int whseTag = 20;
         List<LabelData> outputBuffer = new List<LabelData>();
         string labelPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "locationlabels.txt");
         string barcodePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "locationbarcodes.txt");
