@@ -27,12 +27,13 @@ namespace LabelAssistant
         List<LabelData> outputBuffer = new List<LabelData>();
         string labelPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "locationlabels.txt");
         string barcodePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "locationbarcodes.txt");
+
         //string waspPath;
         public MainWindow()
         {
             InitializeComponent();
-            File.Create(labelPath);
-            File.Create(barcodePath);
+            File.Delete(labelPath);
+            File.Delete(barcodePath);
         }
 
         private void mainSelect_Checked(object sender, RoutedEventArgs e)
@@ -54,24 +55,77 @@ namespace LabelAssistant
             temp.SetLocation(positionNumber.Text);
             temp.SetWhse(whseTag);
             outputBuffer.Add(temp);
+            aisleNumber.Clear();
+            sectionName.Clear();
+            positionNumber.Clear();
+            shelfNumber.Clear();
+            Keyboard.Focus(aisleNumber);
+            labelTextBlock.Text = "";
+            foreach (LabelData label in outputBuffer)
+            {
+                labelTextBlock.Text += label.GetLabelText() + Environment.NewLine;
+            }
         }
 
         private void exitButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-
         }
 
         private void printButton_Click(object sender, RoutedEventArgs e)
         {
-     
-                foreach (LabelData label in outputBuffer)
+            foreach (LabelData label in outputBuffer)
+            {
+                try
                 {
                     File.AppendAllText(labelPath, label.GetLabelText() + Environment.NewLine);
-                File.AppendAllText(barcodePath, label.GetBarCode() + Environment.NewLine);
-                //Process.Start(waspPath);
+                    File.AppendAllText(barcodePath, label.GetBarCode() + Environment.NewLine);
+                    //Process.Start(waspPath);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message);
+                    throw;
+                }
             }
+            outputBuffer.Clear();
+        }
+
+        private void aisleNumber_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (aisleNumber.GetLineLength(aisleNumber.GetLastVisibleLineIndex()) == 2)
+            {
+                Keyboard.Focus(sectionName);
             }
-        
+        }
+
+        private void sectionName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sectionName.GetLineLength(sectionName.GetLastVisibleLineIndex()) == 2)
+            {
+                Keyboard.Focus(shelfNumber);
+            }
+        }
+
+        private void shelfNumber_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (shelfNumber.GetLineLength(shelfNumber.GetLastVisibleLineIndex()) == 2)
+            {
+                Keyboard.Focus(positionNumber);
+            }
+        }
+
+        private void positionNumber_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (positionNumber.GetLineLength(positionNumber.GetLastVisibleLineIndex()) == 2)
+            {
+                Keyboard.Focus(addLabel);
+            }
+        }
+
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        {
+            Keyboard.Focus(aisleNumber);
+        }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LabelAssistant"
         mc:Ignorable="d" FontSize="18" FontFamily="Segoe UI Light"
         Title="Label Assistant" Height="400" Width="600" >
-    <Grid>
+    <Grid Loaded="Grid_Loaded">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="Auto"/>
@@ -32,13 +32,13 @@
         </Grid.RowDefinitions>
         <RadioButton x:Name="mainSelect" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="Main" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" ToolTip="Sets Main Warehouse Tag" Checked="mainSelect_Checked" IsChecked="True"/>
         <RadioButton x:Name="cageSelect" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Content="Cage" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" ToolTip="Sets Cage Warehouse Tag" Checked="cageSelect_Checked"/>
-        <TextBox x:Name ="aisleNumber" Grid.Row="2" Grid.Column="1" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. 01, AA, 99"/>
+        <TextBox x:Name ="aisleNumber" Grid.Row="2" Grid.Column="1" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. 01, AA, 99" TextChanged="aisleNumber_TextChanged"/>
         <Label Content="-" Grid.Row="2" Grid.Column="2" FontSize="30" VerticalAlignment="Center" FontWeight="ExtraBold"/>
-        <TextBox x:Name ="sectionName" Grid.Row="2" Grid.Column="3" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. BB, RF, CA"/>
+        <TextBox x:Name ="sectionName" Grid.Row="2" Grid.Column="3" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. BB, RF, CA" TextChanged="sectionName_TextChanged"/>
         <Label Content="-" Grid.Row="2" Grid.Column="4" FontSize="30" VerticalAlignment="Center" FontWeight="ExtraBold"/>
-        <TextBox x:Name ="shelfNumber" Grid.Row="2" Grid.Column="5" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. 03"/>
+        <TextBox x:Name ="shelfNumber" Grid.Row="2" Grid.Column="5" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. 03" TextChanged="shelfNumber_TextChanged"/>
         <Label Content="-" Grid.Row="2" Grid.Column="6" FontSize="30" VerticalAlignment="Center" FontWeight="ExtraBold"/>
-        <TextBox x:Name ="positionNumber" Grid.Row="2" Grid.Column="7" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. 02"/>
+        <TextBox x:Name ="positionNumber" Grid.Row="2" Grid.Column="7" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. 02" TextChanged="positionNumber_TextChanged"/>
         <Button x:Name="addLabel" Grid.Column="8" Grid.Row="2" MinWidth="80" Margin="10" Content="Add" Click="addLabel_Click"/>
         <Label Grid.Row="3" Grid.Column="1" Content="Aisle Number" FontSize="10" HorizontalAlignment="Center"/>
         <Label Grid.Row="3" Grid.Column="3" Content="Section Name" FontSize="10" HorizontalAlignment="Center"/>
@@ -46,8 +46,12 @@
         <Label Grid.Row="3" Grid.Column="7" Content="Position Number" FontSize="10" HorizontalAlignment="Center"/>
         <Button x:Name="printButton" Grid.Row="4" Grid.Column="8" Content="Print" Margin=" 10" MinWidth="50" Click="printButton_Click"/>
         <Button x:Name="exitButton" Grid.Row="4" Grid.Column="9" Content="Exit" Margin=" 10" MinWidth="50" Click="exitButton_Click"/>
+        <ScrollViewer  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="5" Margin="10">
+            <TextBlock x:Name="labelTextBlock"/>
+        </ScrollViewer>
 
 
 
-    </Grid>
+
+</Grid>
 </Window>
