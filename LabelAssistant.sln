@@ -9,6 +9,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Description = This program formats and outputs warehouse label information to two text files to be imported into WASP labeler.
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B1C52B65-BC4A-4EB5-8490-55F36FFB5287}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

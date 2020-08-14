@@ -27,13 +27,18 @@ namespace LabelAssistant
         List<LabelData> outputBuffer = new List<LabelData>();
         string labelPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "locationlabels.txt");
         string barcodePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "locationbarcodes.txt");
-
-        //string waspPath;
+        string configPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "config.txt");
+        string waspPath;
         public MainWindow()
         {
             InitializeComponent();
             File.Delete(labelPath);
             File.Delete(barcodePath);
+            if (ldConfig() == "")
+            {
+                System.Windows.MessageBox.Show("Place WASP shortcut path in config.txt.");
+            }
+            else waspPath = ldConfig();
         }
 
         private void mainSelect_Checked(object sender, RoutedEventArgs e)
@@ -74,23 +79,27 @@ namespace LabelAssistant
 
         private void printButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (LabelData label in outputBuffer)
+            try
             {
-                try
-                {
-                    File.AppendAllText(labelPath, label.GetLabelText() + Environment.NewLine);
-                    File.AppendAllText(barcodePath, label.GetBarCode() + Environment.NewLine);
-                    //Process.Start(waspPath);
-                }
-                catch (Exception ex)
-                {
-                    System.Windows.MessageBox.Show(ex.Message);
-                    throw;
-                }
+                printOutputBuffer();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message + Environment.NewLine + "Place WASP shortcut path in config.txt.");
+                this.Close();
             }
             outputBuffer.Clear();
         }
 
+        void printOutputBuffer()
+        {
+            foreach (LabelData label in outputBuffer)
+            {
+                File.AppendAllText(labelPath, label.GetLabelText() + Environment.NewLine);
+                File.AppendAllText(barcodePath, label.GetBarCode() + Environment.NewLine);
+                //Process.Start(ldConfig());
+            }
+        }
         private void aisleNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (aisleNumber.GetLineLength(aisleNumber.GetLastVisibleLineIndex()) == 2)
@@ -126,6 +135,24 @@ namespace LabelAssistant
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             Keyboard.Focus(aisleNumber);
+        }
+
+        string ldConfig()
+        {
+            if (File.Exists(configPath) == true && configPath != null)
+            {
+                return (File.ReadAllText(configPath));
+            }
+            else if (File.Exists(configPath) == false)
+            {
+                System.Windows.MessageBox.Show("Config.txt generated.");
+                File.AppendAllText(configPath, "");
+                return (""); 
+            }
+            else
+            {
+                return ("");
+            }
         }
     }
 }
