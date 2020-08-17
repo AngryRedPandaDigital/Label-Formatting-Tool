@@ -23,8 +23,8 @@ namespace LabelAssistant
     /// </summary>
     public partial class MainWindow : Window
     {
-        int whseTag = 20;
-        List<LabelData> outputBuffer = new List<LabelData>();
+        string whsePrefix;
+        List<Label> outputBuffer = new List<Label>();
         string labelPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "locationlabels.txt");
         string barcodePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "locationbarcodes.txt");
         string configPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "config.txt");
@@ -43,22 +43,25 @@ namespace LabelAssistant
 
         private void mainSelect_Checked(object sender, RoutedEventArgs e)
         {
-            whseTag = 20;
+            whsePrefix = "20";
         }
 
         private void cageSelect_Checked(object sender, RoutedEventArgs e)
         {
-            whseTag = 10;
+            whsePrefix = "10";
+        }
+
+        private void bkWhseSelect_Checked(object sender, RoutedEventArgs e)
+        {
+            whsePrefix = "60";
         }
 
         private void addLabel_Click(object sender, RoutedEventArgs e)
         {
-            LabelData temp = new LabelData();
-            temp.SetAisle(aisleNumber.Text);
-            temp.SetSection(sectionName.Text);
-            temp.SetShelf(shelfNumber.Text);
-            temp.SetLocation(positionNumber.Text);
-            temp.SetWhse(whseTag);
+            Label temp = new Label();
+            temp.BarCode = whsePrefix + aisleNumber.Text + sectionName.Text + shelfNumber.Text + positionNumber.Text;
+            temp.LabelText = aisleNumber.Text + "-" + sectionName.Text + "-" + shelfNumber.Text + "-" + positionNumber.Text;
+            temp.FullName = aisleNumber.Text + "-" + sectionName.Text + "-" + shelfNumber.Text + "-" + positionNumber.Text + "    -    " + whsePrefix + aisleNumber.Text + sectionName.Text + shelfNumber.Text + positionNumber.Text;
             outputBuffer.Add(temp);
             aisleNumber.Clear();
             sectionName.Clear();
@@ -66,9 +69,9 @@ namespace LabelAssistant
             shelfNumber.Clear();
             Keyboard.Focus(aisleNumber);
             labelTextBlock.Text = "";
-            foreach (LabelData label in outputBuffer)
+            foreach (Label label in outputBuffer)
             {
-                labelTextBlock.Text += label.GetLabelText() + Environment.NewLine;
+                labelTextBlock.Text += label.FullName + Environment.NewLine;
             }
         }
 
@@ -93,10 +96,10 @@ namespace LabelAssistant
 
         void printOutputBuffer()
         {
-            foreach (LabelData label in outputBuffer)
+            foreach (Label label in outputBuffer)
             {
-                File.AppendAllText(labelPath, label.GetLabelText() + Environment.NewLine);
-                File.AppendAllText(barcodePath, label.GetBarCode() + Environment.NewLine);
+                File.AppendAllText(labelPath, label.LabelText + Environment.NewLine);
+                File.AppendAllText(barcodePath, label.BarCode + Environment.NewLine);
                 //Process.Start(ldConfig());
             }
         }
@@ -147,7 +150,7 @@ namespace LabelAssistant
             {
                 System.Windows.MessageBox.Show("Config.txt generated.");
                 File.AppendAllText(configPath, "");
-                return (""); 
+                return ("");
             }
             else
             {

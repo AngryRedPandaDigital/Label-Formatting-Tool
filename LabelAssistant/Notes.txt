@@ -1,0 +1,4 @@
+﻿- Add prefix buttons to window, BackWarehouse (60) & Vials(VA)
+- Add number range option {Radio button underneath position number, adds a dash and an extra box at end allows for adding multiple labels at once.}
+- Add option to delete the labels from the listbox
+- Add another column to the listbox so the barcode data is visible as well
