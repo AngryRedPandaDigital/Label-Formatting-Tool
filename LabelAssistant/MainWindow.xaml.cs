@@ -1,20 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LabelAssistant
 {
@@ -31,60 +20,52 @@ namespace LabelAssistant
         string waspPath;
         public MainWindow()
         {
+            //Initializes the application.
             InitializeComponent();
-            File.Delete(labelPath);
-            File.Delete(barcodePath);
-            if (ldConfig() == "")
-            {
-                System.Windows.MessageBox.Show("Place WASP shortcut path in config.txt.");
-            }
-            else waspPath = ldConfig();
+            StartUp();
         }
+        /// <summary>
+        /// Event handlers for MainWindow.xaml
+        /// </summary>
 
-        private void mainSelect_Checked(object sender, RoutedEventArgs e)
+        private void MainSelect_Checked(object sender, RoutedEventArgs e)
         {
             whsePrefix = "20";
         }
 
-        private void cageSelect_Checked(object sender, RoutedEventArgs e)
+        private void CageSelect_Checked(object sender, RoutedEventArgs e)
         {
             whsePrefix = "10";
         }
 
-        private void bkWhseSelect_Checked(object sender, RoutedEventArgs e)
+        private void BkWhseSelect_Checked(object sender, RoutedEventArgs e)
         {
             whsePrefix = "60";
         }
 
-        private void addLabel_Click(object sender, RoutedEventArgs e)
+        private void AddLabel_Click(object sender, RoutedEventArgs e)
         {
-            Label temp = new Label();
-            temp.BarCode = whsePrefix + aisleNumber.Text + sectionName.Text + shelfNumber.Text + positionNumber.Text;
-            temp.LabelText = aisleNumber.Text + "-" + sectionName.Text + "-" + shelfNumber.Text + "-" + positionNumber.Text;
-            temp.FullName = aisleNumber.Text + "-" + sectionName.Text + "-" + shelfNumber.Text + "-" + positionNumber.Text + "    -    " + whsePrefix + aisleNumber.Text + sectionName.Text + shelfNumber.Text + positionNumber.Text;
-            outputBuffer.Add(temp);
-            aisleNumber.Clear();
-            sectionName.Clear();
-            positionNumber.Clear();
-            shelfNumber.Clear();
-            Keyboard.Focus(aisleNumber);
-            labelTextBlock.Text = "";
-            foreach (Label label in outputBuffer)
+            if (Range_Select.IsChecked == false)
             {
-                labelTextBlock.Text += label.FullName + Environment.NewLine;
+                SingleAdd();
             }
+            else
+            {
+                RangeAdd();
+            }
+            UpdateForm();
         }
 
-        private void exitButton_Click(object sender, RoutedEventArgs e)
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private void printButton_Click(object sender, RoutedEventArgs e)
+        private void PrintButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                printOutputBuffer();
+                PrintOutputBuffer();
             }
             catch (Exception ex)
             {
@@ -94,53 +75,88 @@ namespace LabelAssistant
             outputBuffer.Clear();
         }
 
-        void printOutputBuffer()
+        private void AisleNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            foreach (Label label in outputBuffer)
+            if (AisleNumber.GetLineLength(AisleNumber.GetLastVisibleLineIndex()) == 2)
             {
-                File.AppendAllText(labelPath, label.LabelText + Environment.NewLine);
-                File.AppendAllText(barcodePath, label.BarCode + Environment.NewLine);
-                //Process.Start(ldConfig());
-            }
-        }
-        private void aisleNumber_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (aisleNumber.GetLineLength(aisleNumber.GetLastVisibleLineIndex()) == 2)
-            {
-                Keyboard.Focus(sectionName);
+                Keyboard.Focus(SectionName);
             }
         }
 
-        private void sectionName_TextChanged(object sender, TextChangedEventArgs e)
+        private void SectionName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (sectionName.GetLineLength(sectionName.GetLastVisibleLineIndex()) == 2)
+            if (SectionName.GetLineLength(SectionName.GetLastVisibleLineIndex()) == 2)
             {
-                Keyboard.Focus(shelfNumber);
+                Keyboard.Focus(ShelfNumber);
             }
         }
 
-        private void shelfNumber_TextChanged(object sender, TextChangedEventArgs e)
+        private void ShelfNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (shelfNumber.GetLineLength(shelfNumber.GetLastVisibleLineIndex()) == 2)
+            if (ShelfNumber.GetLineLength(ShelfNumber.GetLastVisibleLineIndex()) == 2)
             {
-                Keyboard.Focus(positionNumber);
+                Keyboard.Focus(PositionNumber);
             }
         }
 
-        private void positionNumber_TextChanged(object sender, TextChangedEventArgs e)
+        private void PositionNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (positionNumber.GetLineLength(positionNumber.GetLastVisibleLineIndex()) == 2)
+            if (PositionNumber.GetLineLength(PositionNumber.GetLastVisibleLineIndex()) == 2)
             {
-                Keyboard.Focus(addLabel);
+                if (Range_Select.IsChecked == true)
+                {
+                    Keyboard.Focus(LocationMax);
+                }
+                else Keyboard.Focus(AddLabel);
             }
+        }
+
+        private void LocationMax_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (LocationMax.GetLineLength(LocationMax.GetLastVisibleLineIndex()) == 2)
+            {
+                Keyboard.Focus(AddLabel);
+            }
+        }
+
+        private void Range_Select_Checked(object sender, RoutedEventArgs e)
+        {
+            LocationMaxText.Visibility = Visibility.Visible;
+            LocationMax.Visibility = Visibility.Visible;
+            PositionLabel.Visibility = Visibility.Hidden;
+            Keyboard.Focus(AisleNumber);
+        }
+
+        private void Range_Select_Unchecked(object sender, RoutedEventArgs e)
+        {
+            LocationMaxText.Visibility = Visibility.Hidden;
+            LocationMax.Visibility = Visibility.Hidden;
+            PositionLabel.Visibility = Visibility.Visible;
+            Keyboard.Focus(AisleNumber);
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            Keyboard.Focus(aisleNumber);
+            Keyboard.Focus(AisleNumber);
         }
 
-        string ldConfig()
+        /// <summary>
+        /// Other methods to be used by MainWindow()
+        /// </summary>
+
+        private void StartUp()
+        {
+            File.Delete(labelPath);
+            File.Delete(barcodePath);
+            if (LoadConfig() == "")
+            {
+                System.Windows.MessageBox.Show("Place WASP shortcut path in config.txt.");
+            }
+            else waspPath = LoadConfig();
+            OutputViewer.ItemsSource = outputBuffer;
+        }
+
+        string LoadConfig()
         {
             if (File.Exists(configPath) == true && configPath != null)
             {
@@ -155,6 +171,77 @@ namespace LabelAssistant
             else
             {
                 return ("");
+            }
+        }
+
+        private void SingleAdd()
+        {
+            Label temp = new Label();
+            temp.BarCode = whsePrefix + AisleNumber.Text + SectionName.Text + ShelfNumber.Text + PositionNumber.Text;
+            temp.LabelText = AisleNumber.Text + "-" + SectionName.Text + "-" + ShelfNumber.Text + "-" + PositionNumber.Text;
+            temp.FullName = AisleNumber.Text + "-" + SectionName.Text + "-" + ShelfNumber.Text + "-" + PositionNumber.Text + "    -    " + whsePrefix + AisleNumber.Text + SectionName.Text + ShelfNumber.Text + PositionNumber.Text;
+            outputBuffer.Add(temp);
+        }
+
+        private void RangeAdd()
+        {
+            int rangeCounter = 0;
+            int rangeMax = 0;
+            try
+            {
+                rangeCounter = Convert.ToInt32(PositionNumber.Text);
+                rangeMax = Convert.ToInt32(LocationMax.Text);
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("Must be a numerical value!");
+                UpdateForm();
+            }
+            while (rangeCounter <= rangeMax)
+            {
+                Label temp = new Label();
+                if (rangeCounter < 10)
+                {
+                    temp.BarCode = $"{whsePrefix}{AisleNumber.Text}{SectionName.Text}{ShelfNumber.Text}0{rangeCounter}";
+                    temp.LabelText = $"{AisleNumber.Text}-{SectionName.Text}-{ShelfNumber.Text}-0{rangeCounter}";
+                    temp.FullName = $"{AisleNumber.Text}-{SectionName.Text}-{ShelfNumber.Text}-0{rangeCounter}    -    {whsePrefix}{AisleNumber.Text}{SectionName.Text}{ShelfNumber.Text}0{rangeCounter}";
+                }
+                else if (rangeCounter >= 10)
+                {
+                    temp.BarCode = $"{whsePrefix} + {AisleNumber.Text} + {SectionName.Text} + {ShelfNumber.Text} + {rangeCounter}";
+                    temp.LabelText = $"{AisleNumber.Text}-{SectionName.Text}-{ShelfNumber.Text}-{rangeCounter}";
+                    temp.FullName = $"{AisleNumber.Text}-{SectionName.Text}-{ShelfNumber.Text}-{rangeCounter}    -    {whsePrefix}{AisleNumber.Text}{SectionName.Text}{ShelfNumber.Text}{rangeCounter}";
+                }
+                outputBuffer.Add(temp);
+                rangeCounter++;
+
+            }
+        }
+
+        private void UpdateForm()
+        {
+            AisleNumber.Clear();
+            SectionName.Clear();
+            PositionNumber.Clear();
+            ShelfNumber.Clear();
+            LocationMax.Clear();
+            Keyboard.Focus(AisleNumber);
+            OutputViewer.Items.Refresh();
+            //LabelTextBlock.Text = "";
+            foreach (Label label in outputBuffer)
+            {
+                // LabelTextBlock.Text += label.FullName + Environment.NewLine;
+            }
+        }
+
+        void PrintOutputBuffer()
+        {
+            foreach (Label label in outputBuffer)
+            {
+                File.AppendAllText(labelPath, label.LabelText + Environment.NewLine);
+                File.AppendAllText(barcodePath, label.BarCode + Environment.NewLine);
+                //Process.Start(ldConfig());
             }
         }
     }

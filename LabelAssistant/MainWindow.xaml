@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LabelAssistant"
         mc:Ignorable="d" FontSize="18" FontFamily="Segoe UI Light"
-        Title="Label Assistant" Height="400" Width="600" >
+        Title="Label Assistant" Height="400" Width="670" ResizeMode="NoResize">
     <Grid Loaded="Grid_Loaded">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -16,7 +16,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
@@ -27,32 +27,46 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <RadioButton x:Name="mainSelect" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="Main" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" ToolTip="Sets Main Warehouse Prefix" Checked="mainSelect_Checked" IsChecked="True"/>
-        <RadioButton x:Name="cageSelect" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Content="Cage" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" ToolTip="Sets Cage Prefix" Checked="cageSelect_Checked"/>
-        <RadioButton x:Name="bkWhseSelect" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="3" Content="Back Warehouse" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" ToolTip="Sets Back Warehouse Prefix" Checked="bkWhseSelect_Checked"/>
-        <TextBox x:Name ="aisleNumber" Grid.Row="2" Grid.Column="1" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. 01, AA, 99" TextChanged="aisleNumber_TextChanged"/>
+        <RadioButton x:Name="MainSelect" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="Main" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" ToolTip="Sets Main Warehouse Prefix" Checked="MainSelect_Checked" IsChecked="True"/>
+        <RadioButton x:Name="CageSelect" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Content="Cage" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" ToolTip="Sets Cage Prefix" Checked="CageSelect_Checked"/>
+        <RadioButton x:Name="BkWhseSelect" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="3" Content="Back Warehouse" FontSize="15" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" ToolTip="Sets Back Warehouse Prefix" Checked="BkWhseSelect_Checked"/>
+        <TextBox x:Name ="AisleNumber" Grid.Row="2" Grid.Column="1" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. 01, AA, 99" TextChanged="AisleNumber_TextChanged"/>
         <Label Content="-" Grid.Row="2" Grid.Column="2" FontSize="30" VerticalAlignment="Center" FontWeight="ExtraBold"/>
-        <TextBox x:Name ="sectionName" Grid.Row="2" Grid.Column="3" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. BB, RF, CA" TextChanged="sectionName_TextChanged"/>
+        <TextBox x:Name ="SectionName" Grid.Row="2" Grid.Column="3" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. BB, RF, CA" TextChanged="SectionName_TextChanged"/>
         <Label Content="-" Grid.Row="2" Grid.Column="4" FontSize="30" VerticalAlignment="Center" FontWeight="ExtraBold"/>
-        <TextBox x:Name ="shelfNumber" Grid.Row="2" Grid.Column="5" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. 03" TextChanged="shelfNumber_TextChanged"/>
+        <TextBox x:Name ="ShelfNumber" Grid.Row="2" Grid.Column="5" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. 03" TextChanged="ShelfNumber_TextChanged"/>
         <Label Content="-" Grid.Row="2" Grid.Column="6" FontSize="30" VerticalAlignment="Center" FontWeight="ExtraBold"/>
-        <TextBox x:Name ="positionNumber" Grid.Row="2" Grid.Column="7" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. 02" TextChanged="positionNumber_TextChanged"/>
-        <Button x:Name="addLabel" Grid.Column="8" Grid.Row="2" MinWidth="80" Margin="10" Content="Add" Click="addLabel_Click"/>
-        <Label Grid.Row="3" Grid.Column="1" Content="Aisle Number" FontSize="10" HorizontalAlignment="Center"/>
-        <Label Grid.Row="3" Grid.Column="3" Content="Section Name" FontSize="10" HorizontalAlignment="Center"/>
-        <Label Grid.Row="3" Grid.Column="5" Content="Shelf Number" FontSize="10" HorizontalAlignment="Center"/>
-        <Label Grid.Row="3" Grid.Column="7" Content="Position Number" FontSize="10" HorizontalAlignment="Center"/>
-        <Button x:Name="printButton" Grid.Row="4" Grid.Column="8" Content="Print" Margin=" 10" MinWidth="50" Click="printButton_Click"/>
-        <Button x:Name="exitButton" Grid.Row="4" Grid.Column="9" Content="Exit" Margin=" 10" MinWidth="50" Click="exitButton_Click"/>
-        <ScrollViewer  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="5" Margin="10">
-            <TextBlock x:Name="labelTextBlock"/>
-        </ScrollViewer>
+        <TextBox x:Name ="PositionNumber" Grid.Row="2" Grid.Column="7" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. 02" TextChanged="PositionNumber_TextChanged"/>
+        <Button x:Name="AddLabel" Grid.Column="9" Grid.Row="2" MinWidth="80" MinHeight="30" Margin="10" Content="Add" Click="AddLabel_Click"/>
+        <Label Grid.Row="3" Grid.Column="1" Content="Aisle Number" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Grid.Row="3" Grid.Column="3" Content="Section Name" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Grid.Row="3" Grid.Column="5" Content="Shelf Number" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label  x:Name="PositionLabel" Grid.Row="3" Grid.Column="7" Content="Position Number" FontSize="10" HorizontalAlignment="Center"/>
+        <CheckBox x:Name="Range_Select" Grid.Row="3" Grid.Column="9" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Add multiple labels"
+          FontSize="12" Grid.ColumnSpan="2" Checked="Range_Select_Checked" Unchecked="Range_Select_Unchecked"/>
+        <TextBox x:Name ="LocationMax" Grid.Row="4" Grid.Column="7" Width="50" Height="30" Margin="10" MaxLength="2" ToolTip="Ex. 10" TextChanged="LocationMax_TextChanged"
+                 Visibility="Hidden"/>
+        <Button x:Name="PrintButton" Grid.Row="4" MinHeight="30" Grid.Column="9" Content="Print" Margin=" 10" MinWidth="50" Click="PrintButton_Click"/>
+        <Label  x:Name="LocationMaxText" Grid.Row="3" Grid.Column="7" Content="Through" FontSize="10" HorizontalAlignment="Center" Visibility="Hidden"/>
+        <Button x:Name="ExitButton" Grid.Row="5" Grid.Column="9" Content="Exit" Margin=" 10" MinWidth="80" MinHeight="30" Click="ExitButton_Click"/>
+        <ListBox x:Name="OutputViewer" Grid.Row ="5" Grid.Column="1" Grid.ColumnSpan="6" Margin="10" Grid.RowSpan="5" IsSynchronizedWithCurrentItem="True">
+                <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding FullName}" Grid.Column="1" Margin="2" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        <GroupBox Width="300" Header="" FontWeight="Medium"  FontFamily="Segoe UI" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="6" Margin="10" Grid.RowSpan="5" Visibility="Hidden">
+        </GroupBox>
 
 
 
 
-</Grid>
+    </Grid>
 </Window>
