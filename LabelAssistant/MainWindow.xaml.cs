@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace LabelAssistant
 {
@@ -13,7 +15,7 @@ namespace LabelAssistant
     public partial class MainWindow : Window
     {
         string whsePrefix;
-        List<Label> outputBuffer = new List<Label>();
+        ObservableCollection<Label> outputBuffer = new ObservableCollection<Label>();
         string labelPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "locationlabels.txt");
         string barcodePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "locationbarcodes.txt");
         string configPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "config.txt");
@@ -41,6 +43,11 @@ namespace LabelAssistant
         private void BkWhseSelect_Checked(object sender, RoutedEventArgs e)
         {
             whsePrefix = "60";
+        }
+
+        private void VialSelect_Checked(object sender, RoutedEventArgs e)
+        {
+            whsePrefix = "70";
         }
 
         private void AddLabel_Click(object sender, RoutedEventArgs e)
@@ -72,6 +79,7 @@ namespace LabelAssistant
                 System.Windows.MessageBox.Show(ex.Message + Environment.NewLine + "Place WASP shortcut path in config.txt.");
                 this.Close();
             }
+            CountLabels();
             outputBuffer.Clear();
         }
 
@@ -138,6 +146,14 @@ namespace LabelAssistant
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             Keyboard.Focus(AisleNumber);
+        }
+        
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            int index;
+            var item = (sender as FrameworkElement).DataContext;
+            index = OutputViewer.Items.IndexOf(item);
+            outputBuffer.RemoveAt(index);
         }
 
         /// <summary>
@@ -243,6 +259,13 @@ namespace LabelAssistant
                 File.AppendAllText(barcodePath, label.BarCode + Environment.NewLine);
                 //Process.Start(ldConfig());
             }
+        }
+
+        private void CountLabels()
+        {
+            int numberOfLabels;
+            numberOfLabels = outputBuffer.Count;
+            MessageBox.Show($"{ numberOfLabels } labels to print.");
         }
     }
 }
