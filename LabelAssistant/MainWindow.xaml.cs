@@ -244,11 +244,6 @@ namespace LabelAssistant
             LocationMax.Clear();
             Keyboard.Focus(AisleNumber);
             OutputViewer.Items.Refresh();
-            //LabelTextBlock.Text = "";
-            foreach (Label label in outputBuffer)
-            {
-                // LabelTextBlock.Text += label.FullName + Environment.NewLine;
-            }
         }
 
         void PrintOutputBuffer()
@@ -257,7 +252,7 @@ namespace LabelAssistant
             {
                 File.AppendAllText(labelPath, label.LabelText + Environment.NewLine);
                 File.AppendAllText(barcodePath, label.BarCode + Environment.NewLine);
-                //Process.Start(ldConfig());
+                Process.Start(ldConfig());
             }
         }
 
