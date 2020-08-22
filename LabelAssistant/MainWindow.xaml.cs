@@ -225,7 +225,7 @@ namespace LabelAssistant
                 }
                 else if (rangeCounter >= 10)
                 {
-                    temp.BarCode = $"{whsePrefix} + {AisleNumber.Text} + {SectionName.Text} + {ShelfNumber.Text} + {rangeCounter}";
+                    temp.BarCode = $"{whsePrefix}{AisleNumber.Text}{SectionName.Text}{ShelfNumber.Text}{rangeCounter}";
                     temp.LabelText = $"{AisleNumber.Text}-{SectionName.Text}-{ShelfNumber.Text}-{rangeCounter}";
                     temp.FullName = $"{AisleNumber.Text}-{SectionName.Text}-{ShelfNumber.Text}-{rangeCounter}    -    {whsePrefix}{AisleNumber.Text}{SectionName.Text}{ShelfNumber.Text}{rangeCounter}";
                 }
